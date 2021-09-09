@@ -16,7 +16,7 @@ public class SellerService {
 	@Autowired
 	private SellerRepository repository;
 	
-	//.map converte para DTO
+	//.stream converte para DTO (.map - mapeamento)
 	//.collect retorna no formato Entity
 	public List<SellerDTO> findAll(){
 		List<Seller> result = repository.findAll();
