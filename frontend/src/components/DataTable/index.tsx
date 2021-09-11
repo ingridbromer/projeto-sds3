@@ -1,11 +1,12 @@
 import axios from "axios";
+import Pagination from "components/Pagination/index.";
 import { useEffect, useState } from "react";
 import { SalePage } from "types/sale";
 import { formatLocalDate } from "utils/format";
 import { BASE_URL } from "utils/requests";
 
 const DataTable = () => {
-
+    const [activePage, setActivePage] = useState(0);
     const [page, setPage] = useState<SalePage>({
         first: true,
         last: true,
@@ -15,14 +16,21 @@ const DataTable = () => {
     })
 
     useEffect(() => {
-        axios.get(`${BASE_URL}/sales?page=2&size=10&sort=date,desc`)
+        axios.get(`${BASE_URL}/sales?page=${activePage}&size=10&sort=date,desc`)
             .then(response => {
                 setPage(response.data)
             })
-    }, []);
+    }, [activePage]);
+
+    const changePage = (index: number) => {
+        setActivePage(index);
+    }
 
     //Renderizar uma coleção , id único para cada item da coleção (key em tr)
+    //{page como estado}
     return (
+        <>
+        <Pagination page={page} onPageChange={changePage}/>
         <div className="table-responsive">
             <table className="table table-striped table-sm">
                 <thead>
@@ -49,6 +57,7 @@ const DataTable = () => {
                 </tbody>
             </table>
         </div>
+        </>
 
     );
 }
